@@ -1,0 +1,76 @@
+﻿<Window x:Class="WPFApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFApp"
+        xmlns:cl="clr-namespace:ClassLibrary;assembly=ClassLibrary"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        Loaded="WindowLoaded" DataContext="{StaticResource team}">
+    <Window.Resources>
+        <CollectionViewSource Source="{Binding}" x:Key="key_team_view" Filter="FilterResearchers"/>
+        <cl:PersonConverter x:Key="key_PersonConverter"/>
+        <cl:ResearcherConverter x:Key="key_ResearcherConverter"/>
+        <DataTemplate x:Key="key_PersonListDataTemplate">
+            <TextBlock Text="{Binding Converter={StaticResource key_PersonConverter}}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="key_ResearcherListDataTemplate">
+            <TextBlock Text="{Binding Converter={StaticResource key_ResearcherConverter}}"/>
+        </DataTemplate>
+        <!--<cl:Researcher x:Key="key_ResearcherStub">
+            <cl:Researcher.Birthdate>{Binding ElementName=NewNameTextBox Path=Text}</cl:Researcher.Birthdate>
+        </cl:Researcher>-->
+        <ContextMenu x:Key="key_ResearcherContextMenu">
+            <MenuItem Header="Add Default Researcher" Click="AddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
+            <MenuItem Header="Add Custom Researcher" Click="AddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
+        </ContextMenu>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Menu HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792">
+            <MenuItem Header="File" Height="44" Width="77">
+                <MenuItem Header="New" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Open" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Save" Click="SaveCollection" HorizontalAlignment="Left" Height="34" Width="140"/>
+            </MenuItem>
+            <MenuItem Header="Edit" Height="41" Width="93">
+                <MenuItem Header="Add Default Researcher" Click="AddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Add Default Programmer" Click="AddDefaultProgrammer" HorizontalAlignment="Left" Height="28" Width="213" Margin="0,0,-73,0"/>
+                <MenuItem Header="Add Custom Researcher" Click="AddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Add Defaults" Click="AddDefaults" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Remove" HorizontalAlignment="Left" Height="28" Width="140"/>
+            </MenuItem>
+        </Menu>
+
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="626,47,0,0" TextWrapping="Wrap" Text="{Binding GroupName}" VerticalAlignment="Top" Width="120" Name="groupNameTextBox"/>
+        <TextBlock HorizontalAlignment="Left" Margin="626,91,0,0" TextWrapping="Wrap" Text="{Binding ResearcherFraction}" VerticalAlignment="Top" Name="researcherFractionTextBlock" Height="16" Width="66"/>
+        <TextBlock HorizontalAlignment="Left" Margin="626,134,0,0" TextWrapping="Wrap" Text="{Binding ChangesNotSaved}" VerticalAlignment="Top" Name="saveStatusTextBlock" Height="28" Width="120"/>
+
+        <ListBox HorizontalAlignment="Left" Height="128" Margin="10,47,0,0" VerticalAlignment="Top" Width="333" Name="teamObservableListBox"
+                 ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" ItemTemplate="{StaticResource key_PersonListDataTemplate}"/>
+        <ListBox HorizontalAlignment="Left" Height="173" Margin="10,194,0,0" VerticalAlignment="Top" Width="233" Name="researchersListBox"
+                 ItemsSource="{Binding Source={StaticResource key_team_view}}" IsSynchronizedWithCurrentItem="True" ItemTemplate="{StaticResource key_ResearcherListDataTemplate}"
+                 ContextMenu="{StaticResource key_ResearcherContextMenu}">
+            
+        </ListBox>
+
+        <RadioButton Content="Use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Left" Margin="400,89,0,0" VerticalAlignment="Top" Checked="UseDataTemplate" Height="15" Width="115"/>
+        <RadioButton Content="Don't use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Left" Margin="400,132,0,0" VerticalAlignment="Top" IsChecked="True" Checked="DontUseDataTemplate" Height="15" Width="146"/>
+
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="278,256,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.Birthdate}" VerticalAlignment="Top" Width="120" Name="birthdateTextBlock"/>
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="278,301,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.SciField}" VerticalAlignment="Top" Width="120" Name="sciFieldTextBlock"/>
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="278,365,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.PubNumber}" VerticalAlignment="Top" Width="120" Name="pubNumberTextBlock"/>
+
+
+        <TextBox HorizontalAlignment="Left" Name="newFirstNameTextBox" Height="23" Margin="597,221,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Name="newLastNameTextBox" Height="23" Margin="597,256,0,0" TextWrapping="Wrap" Text="Surname" VerticalAlignment="Top" Width="120"/>
+        <DatePicker Name="newBirthdateDatePicker"  Margin="552,301,75,77"></DatePicker>
+        <ComboBox Name="newSciFieldComboBox"  ItemsSource="{Binding ResearchAreas}" Margin="552,347,24,46"></ComboBox>
+        <TextBox HorizontalAlignment="Left" Name="newPubNumberTextBox" Height="23" Margin="597,378,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120"/>
+
+    </Grid>
+</Window>

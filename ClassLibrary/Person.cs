@@ -4,6 +4,7 @@ using System.Windows.Data;
 
 namespace ClassLibrary
 {
+    [Serializable]
     public class Person : IDeepCopy
     {
         public string FirstName { get; set; }

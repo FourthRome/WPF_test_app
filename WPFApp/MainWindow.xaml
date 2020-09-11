@@ -7,7 +7,8 @@
         xmlns:cl="clr-namespace:ClassLibrary;assembly=ClassLibrary"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        Loaded="WindowLoaded" DataContext="{StaticResource team}">
+        Loaded="WindowLoaded" DataContext="{StaticResource team}"
+        Closing="OnClosing">
     <Window.Resources>
         <CollectionViewSource Source="{Binding}" x:Key="key_team_view" Filter="FilterResearchers"/>
         <cl:PersonConverter x:Key="key_PersonConverter"/>
@@ -34,8 +35,8 @@
         <Menu HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792">
             <MenuItem Header="File" Height="44" Width="77">
                 <MenuItem Header="New" HorizontalAlignment="Left" Height="28" Width="140"/>
-                <MenuItem Header="Open" HorizontalAlignment="Left" Height="28" Width="140"/>
-                <MenuItem Header="Save" Click="SaveCollection" HorizontalAlignment="Left" Height="34" Width="140"/>
+                <MenuItem Header="Open" Click="OpenCollection" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Save" Click="OnClickSave" HorizontalAlignment="Left" Height="34" Width="140"/>
             </MenuItem>
             <MenuItem Header="Edit" Height="41" Width="93">
                 <MenuItem Header="Add Default Researcher" Click="AddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
@@ -46,9 +47,9 @@
             </MenuItem>
         </Menu>
 
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="626,47,0,0" TextWrapping="Wrap" Text="{Binding GroupName}" VerticalAlignment="Top" Width="120" Name="groupNameTextBox"/>
-        <TextBlock HorizontalAlignment="Left" Margin="626,91,0,0" TextWrapping="Wrap" Text="{Binding ResearcherFraction}" VerticalAlignment="Top" Name="researcherFractionTextBlock" Height="16" Width="66"/>
-        <TextBlock HorizontalAlignment="Left" Margin="626,134,0,0" TextWrapping="Wrap" Text="{Binding ChangesNotSaved}" VerticalAlignment="Top" Name="saveStatusTextBlock" Height="28" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="552,68,0,0" TextWrapping="Wrap" Text="{Binding Path=GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Name="groupNameTextBox"/>
+        <TextBlock HorizontalAlignment="Left" Margin="626,91,0,0" TextWrapping="Wrap" Text="{Binding Path=ResearcherFraction}" VerticalAlignment="Top" Name="researcherFractionTextBlock" Height="16" Width="66"/>
+        <TextBlock HorizontalAlignment="Left" Margin="626,134,0,0" TextWrapping="Wrap" Text="{Binding Path=ChangesNotSaved}" VerticalAlignment="Top" Name="saveStatusTextBlock" Height="28" Width="120"/>
 
         <ListBox HorizontalAlignment="Left" Height="128" Margin="10,47,0,0" VerticalAlignment="Top" Width="333" Name="teamObservableListBox"
                  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" ItemTemplate="{StaticResource key_PersonListDataTemplate}"/>

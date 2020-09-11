@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
@@ -32,8 +33,6 @@ namespace WPFApp
             team = this.FindResource("team") as TeamObservable;
             team.AddDefaults();
             team.AddDefaultResearcher();
-
-            
 
             Binding bd1 = new Binding();
             bd1.Source = researcherStub;
@@ -116,8 +115,20 @@ namespace WPFApp
             team.AddDefaults();
         }
 
-        private void SaveCollection(object sender, RoutedEventArgs e)
+        private void OnClickSave(object sender, RoutedEventArgs e)
         {
+            SaveCollection();
+        }
+
+        private void OnClosing(object sender, CancelEventArgs e)
+        {
+            if (ProceedWithCollectionReplacement() == false) { e.Cancel = true; }
+        }
+
+        private bool SaveCollection()
+        {
+            //BindingOperations.GetBindingExpression(groupNameTextBox, TextBox.TextProperty).UpdateSource();
+
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
 
             dlg.Filter = "TeamObservable serialized object(*teamobservable)|*.teamobservable|All(*.*)|*.*";
@@ -126,11 +137,51 @@ namespace WPFApp
 
             if (dlg.ShowDialog() == true)
             {
+                team.ChangesNotSaved = false;
                 TeamObservable.Save(dlg.FileName, this.team);
                 // Here is no potential exception, but the file can be not saved properly.
                 // Need a messagebox here.
-                team.ChangesNotSaved = false;
+                return true;
             }
+            else { return false; }
+        }
+
+        private bool ProceedWithCollectionReplacement()
+        {
+            if (team.ChangesNotSaved)
+            {
+                MessageBoxResult result = System.Windows.MessageBox.Show(
+                    messageBoxText:"Do you want to save the changes into the current team? Your changes will be lost if you don't save them.",
+                    caption: "TeamObservable Editor",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.Yes);
+
+                if (result == MessageBoxResult.Cancel) { return false; }
+                else if (result == MessageBoxResult.Yes) { return this.SaveCollection(); }
+            }
+            return true;
+        }
+
+        private void OpenCollection(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.Filter = "TeamObservable serialized object (*teamobservable)|*.teamobservable|All(*.*)|*.*";
+            dlg.FilterIndex = 0;
+            dlg.CheckFileExists = true;
+
+            if (dlg.ShowDialog() == true)
+            {
+                if (ProceedWithCollectionReplacement())
+                {
+                    TeamObservable.Load(dlg.FileName, ref team);
+                    // Here is no potential exception, but the file could be not opened properly.
+                    // Need a messagebox here.
+                    this.DataContext = team;
+                }
+            }
+            
         }
     }
 }

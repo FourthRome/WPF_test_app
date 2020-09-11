@@ -2,6 +2,7 @@
 
 namespace ClassLibrary
 {
+    [Serializable]
     public class Programmer : Person, IDeepCopy
     {
         public double Exp { get; set; }

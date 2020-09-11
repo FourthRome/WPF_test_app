@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ClassLibrary
 {
+    [Serializable]
     public class Researcher : Person//, IComparable<Researcher>
     {
         public string SciField { get; set; }

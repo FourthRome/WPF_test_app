@@ -8,11 +8,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 namespace ClassLibrary
 {
     [Serializable]
-    public class TeamObservable : System.Collections.ObjectModel.ObservableCollection<Person>, INotifyPropertyChanged
+    public class TeamObservable : System.Collections.ObjectModel.ObservableCollection<Person>, INotifyPropertyChanged, IDeserializationCallback
     {
         //---------------
         // Private fields
@@ -33,6 +34,7 @@ namespace ClassLibrary
             {
                 name = value;
                 NotifyPropertyChanged();
+                ChangesNotSaved = true;
             }
         }
 
@@ -52,6 +54,7 @@ namespace ClassLibrary
             }
         }
 
+        [field:NonSerializedAttribute()]
         public new event PropertyChangedEventHandler PropertyChanged;
 
         //-------------
@@ -72,6 +75,11 @@ namespace ClassLibrary
                 "Other"
             };
             ChangesNotSaved = true;
+            this.CollectionChanged += this.OnCollectionChanged;
+        }
+
+        public void OnDeserialization(object sender)
+        {
             this.CollectionChanged += this.OnCollectionChanged;
         }
 

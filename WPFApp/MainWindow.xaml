@@ -22,8 +22,8 @@
         </DataTemplate>
         <cl:Researcher x:Key="key_ResearcherStub"/>
         <ContextMenu x:Key="key_ResearcherContextMenu">
-            <MenuItem Header="Add Default Researcher" Click="AddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
-            <MenuItem Header="Add Custom Researcher" Click="AddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
+            <MenuItem Header="Add Default Researcher" Click="OnClickAddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
+            <MenuItem Header="Add Custom Researcher" Click="OnClickAddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
         </ContextMenu>
     </Window.Resources>
     <Grid>
@@ -34,14 +34,14 @@
         <Menu HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792">
             <MenuItem Header="File" Height="44" Width="77">
                 <MenuItem Header="New" Click="OnClickNew" HorizontalAlignment="Left" Height="28" Width="140"/>
-                <MenuItem Header="Open" Click="OpenCollection" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Open" Click="OnClickOpen" HorizontalAlignment="Left" Height="28" Width="140"/>
                 <MenuItem Header="Save" Click="OnClickSave" HorizontalAlignment="Left" Height="34" Width="140"/>
             </MenuItem>
             <MenuItem Header="Edit" Height="41" Width="93">
-                <MenuItem Header="Add Default Researcher" Click="AddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
-                <MenuItem Header="Add Default Programmer" Click="AddDefaultProgrammer" HorizontalAlignment="Left" Height="28" Width="213" Margin="0,0,-73,0"/>
-                <MenuItem Header="Add Custom Researcher" Click="AddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
-                <MenuItem Header="Add Defaults" Click="AddDefaults" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Add Default Researcher" Click="OnClickAddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Add Default Programmer" Click="OnClickAddDefaultProgrammer" HorizontalAlignment="Left" Height="28" Width="213" Margin="0,0,-73,0"/>
+                <MenuItem Header="Add Custom Researcher" Click="OnClickAddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Add Defaults" Click="OnClickAddDefaults" HorizontalAlignment="Left" Height="28" Width="140"/>
                 <MenuItem Header="Remove" Click="OnClickRemove" HorizontalAlignment="Left" Height="28" Width="140"/>
             </MenuItem>
         </Menu>
@@ -58,8 +58,8 @@
             
         </ListBox>
 
-        <RadioButton Content="Use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Left" Margin="400,89,0,0" VerticalAlignment="Top" Checked="UseDataTemplate" Height="15" Width="115"/>
-        <RadioButton Content="Don't use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Left" Margin="400,132,0,0" VerticalAlignment="Top" IsChecked="True" Checked="DontUseDataTemplate" Height="15" Width="146"/>
+        <RadioButton Content="Use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Left" Margin="400,89,0,0" VerticalAlignment="Top" Checked="OnCheckedUseDataTemplate" Height="15" Width="115"/>
+        <RadioButton Content="Don't use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Left" Margin="400,132,0,0" VerticalAlignment="Top" IsChecked="True" Checked="OnCheckedDontUseDataTemplate" Height="15" Width="146"/>
 
         <TextBlock HorizontalAlignment="Left" Height="23" Margin="278,256,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.Birthdate}" VerticalAlignment="Top" Width="120" Name="birthdateTextBlock"/>
         <TextBlock HorizontalAlignment="Left" Height="23" Margin="278,301,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.SciField}" VerticalAlignment="Top" Width="120" Name="sciFieldTextBlock"/>
@@ -69,7 +69,9 @@
         <TextBox HorizontalAlignment="Left" Name="newFirstNameTextBox" Text="{Binding Source={StaticResource key_ResearcherStub}, Path=FirstName, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="597,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Name="newLastNameTextBox" Text="{Binding Source={StaticResource key_ResearcherStub}, Path=LastName, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="597,256,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <DatePicker Name="newBirthdateDatePicker" SelectedDate="{Binding Source={StaticResource key_ResearcherStub}, Path=Birthdate, UpdateSourceTrigger=PropertyChanged}" Margin="552,301,75,77"></DatePicker>
-        <ComboBox Name="newSciFieldComboBox" SelectedItem="{Binding Source={StaticResource key_ResearcherStub}, Path=SciField, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding ResearchAreas}" Margin="552,347,24,46"></ComboBox>
+        <ComboBox Name="newSciFieldComboBox" SelectedItem="{Binding Source={StaticResource key_ResearcherStub}, Path=SciField, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                  ItemsSource="{Binding Path=ResearchAreas}" SelectedIndex="0" IsReadOnly="True" Margin="552,347,24,41">
+        </ComboBox>
         <TextBox HorizontalAlignment="Left" Name="newPubNumberTextBox" Text="{Binding Source={StaticResource key_ResearcherStub}, Path=PubNumber, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource key_PubNumberConverter}}" Height="23" Margin="597,378,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 
     </Grid>

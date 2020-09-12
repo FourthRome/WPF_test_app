@@ -49,7 +49,7 @@ namespace ClassLibrary
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             Researcher person = value as Researcher;
-            return $"{person.LastName} {person.FirstName}.";
+            return $"{person.LastName} {person.FirstName[0]}.";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

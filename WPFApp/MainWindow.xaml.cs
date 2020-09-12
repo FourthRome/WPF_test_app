@@ -125,6 +125,21 @@ namespace WPFApp
             if (ProceedWithCollectionReplacement() == false) { e.Cancel = true; }
         }
 
+        private void OnClickNew(object sender, RoutedEventArgs e)
+        {
+            if (ProceedWithCollectionReplacement())
+            {
+                this.team = new TeamObservable();
+                this.DataContext = this.team;
+
+                this.researcherStub.FirstName = null;
+                this.researcherStub.LastName = null;
+                this.researcherStub.Birthdate = new DateTime();
+                this.researcherStub.SciField = null;
+                this.researcherStub.PubNumber = 0;
+            }
+        }
+
         private bool SaveCollection()
         {
             //BindingOperations.GetBindingExpression(groupNameTextBox, TextBox.TextProperty).UpdateSource();

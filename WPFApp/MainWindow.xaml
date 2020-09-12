@@ -34,7 +34,7 @@
         </Grid.ColumnDefinitions>
         <Menu HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792">
             <MenuItem Header="File" Height="44" Width="77">
-                <MenuItem Header="New" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="New" Click="OnClickNew" HorizontalAlignment="Left" Height="28" Width="140"/>
                 <MenuItem Header="Open" Click="OpenCollection" HorizontalAlignment="Left" Height="28" Width="140"/>
                 <MenuItem Header="Save" Click="OnClickSave" HorizontalAlignment="Left" Height="34" Width="140"/>
             </MenuItem>

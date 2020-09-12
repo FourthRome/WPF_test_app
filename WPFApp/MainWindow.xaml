@@ -43,7 +43,7 @@
                 <MenuItem Header="Add Default Programmer" Click="AddDefaultProgrammer" HorizontalAlignment="Left" Height="28" Width="213" Margin="0,0,-73,0"/>
                 <MenuItem Header="Add Custom Researcher" Click="AddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
                 <MenuItem Header="Add Defaults" Click="AddDefaults" HorizontalAlignment="Left" Height="28" Width="140"/>
-                <MenuItem Header="Remove" HorizontalAlignment="Left" Height="28" Width="140"/>
+                <MenuItem Header="Remove" Click="OnClickRemove" HorizontalAlignment="Left" Height="28" Width="140"/>
             </MenuItem>
         </Menu>
 

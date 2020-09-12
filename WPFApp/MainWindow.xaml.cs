@@ -140,6 +140,11 @@ namespace WPFApp
             }
         }
 
+        private void OnClickRemove(object sender, RoutedEventArgs e)
+        {
+            team.RemoveAt(this.teamObservableListBox.SelectedIndex);
+        }
+
         private bool SaveCollection()
         {
             //BindingOperations.GetBindingExpression(groupNameTextBox, TextBox.TextProperty).UpdateSource();

@@ -117,7 +117,7 @@ namespace ClassLibrary
 
         public void RemovePersonAt(int index)
         {
-            RemoveAt(index);
+            if (index >= 0) { RemoveAt(index); }
         }
 
         public void AddDefaults()

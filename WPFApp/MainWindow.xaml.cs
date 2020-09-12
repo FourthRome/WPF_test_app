@@ -59,9 +59,28 @@ namespace WPFApp
 
         private void OnClickAddCustomResearcher(object sender, RoutedEventArgs e)
         {
-            Researcher newResearcher = researcherStub.DeepCopy() as Researcher;
+            bool inputErrors = false;
+            foreach(FrameworkElement child in mainGrid.Children)
+            {
+                if (Validation.GetHasError(child))
+                {
+                    inputErrors = true;
+                    break;
+                }
+            }
 
-            team.Add(newResearcher);
+            if (inputErrors)
+            {
+                MessageBox.Show(
+                    "Some fields with information about new researcher are filled incorrectly. Please check them.",
+                    "TeamObservable Editor",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            } else
+            {
+                Researcher newResearcher = researcherStub.DeepCopy() as Researcher;
+                team.Add(newResearcher);
+            }
         }
 
         private void OnClickAddDefaultResearcher(object sender, RoutedEventArgs e)
@@ -126,7 +145,7 @@ namespace WPFApp
         {
             if (team.ChangesNotSaved)
             {
-                MessageBoxResult result = System.Windows.MessageBox.Show(
+                MessageBoxResult result = MessageBox.Show(
                     messageBoxText:"Do you want to save the changes into the current team? Your changes will be lost if you don't save them.",
                     caption: "TeamObservable Editor",
                     MessageBoxButton.YesNoCancel,

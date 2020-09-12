@@ -17,14 +17,11 @@ namespace WPFApp
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            try
+            try 
             {
                 return System.Convert.ToInt32(value) as object;
-            } catch (FormatException e)
-            {
-                return null;
             }
-            
+            catch (FormatException e) { return null; }
         }
     }
 }

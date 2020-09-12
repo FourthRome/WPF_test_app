@@ -2,14 +2,44 @@
 using System.Windows.Data;
 using System.Text;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace ClassLibrary
 {
     [Serializable]
-    public class Researcher : Person//, IComparable<Researcher>
+    public class Researcher : Person, IDataErrorInfo//, IComparable<Researcher>
     {
         public string SciField { get; set; }
         public int PubNumber { get; set; }
+
+        public string Error { get { throw new NotImplementedException(); } }
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                string msg = null;
+                switch(propertyName)
+                {
+                    case "FirstName":
+                        if (FirstName == null || FirstName == "") { msg = "FirstName must be non-empty."; }
+                        break;
+                    case "LastName":
+                        if (LastName == null || LastName == "") { msg = "LastName must be non-empty."; }
+                        break;
+                    case "SciField":
+                        if (SciField == null || SciField == "") { msg = "SciField must be non-empty."; }
+                        break;
+                    case "PubNumber":
+                        if (PubNumber < 0) { msg = "Pubnumber can't be negative."; }
+                        break;
+                    default:
+                        break;
+                }
+
+                return msg;
+            }
+        }
 
         public Researcher() : this(null, null, new DateTime(), null, 0) { }
 

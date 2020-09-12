@@ -13,15 +13,14 @@
         <CollectionViewSource Source="{Binding}" x:Key="key_team_view" Filter="FilterResearchers"/>
         <cl:PersonConverter x:Key="key_PersonConverter"/>
         <cl:ResearcherConverter x:Key="key_ResearcherConverter"/>
+        <local:PubNumberConverter x:Key="key_PubNumberConverter"/>
         <DataTemplate x:Key="key_PersonListDataTemplate">
             <TextBlock Text="{Binding Converter={StaticResource key_PersonConverter}}"/>
         </DataTemplate>
         <DataTemplate x:Key="key_ResearcherListDataTemplate">
             <TextBlock Text="{Binding Converter={StaticResource key_ResearcherConverter}}"/>
         </DataTemplate>
-        <!--<cl:Researcher x:Key="key_ResearcherStub">
-            <cl:Researcher.Birthdate>{Binding ElementName=NewNameTextBox Path=Text}</cl:Researcher.Birthdate>
-        </cl:Researcher>-->
+        <cl:Researcher x:Key="key_ResearcherStub"/>
         <ContextMenu x:Key="key_ResearcherContextMenu">
             <MenuItem Header="Add Default Researcher" Click="AddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
             <MenuItem Header="Add Custom Researcher" Click="AddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
@@ -67,11 +66,11 @@
         <TextBlock HorizontalAlignment="Left" Height="23" Margin="278,365,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.PubNumber}" VerticalAlignment="Top" Width="120" Name="pubNumberTextBlock"/>
 
 
-        <TextBox HorizontalAlignment="Left" Name="newFirstNameTextBox" Height="23" Margin="597,221,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Name="newLastNameTextBox" Height="23" Margin="597,256,0,0" TextWrapping="Wrap" Text="Surname" VerticalAlignment="Top" Width="120"/>
-        <DatePicker Name="newBirthdateDatePicker"  Margin="552,301,75,77"></DatePicker>
-        <ComboBox Name="newSciFieldComboBox"  ItemsSource="{Binding ResearchAreas}" Margin="552,347,24,46"></ComboBox>
-        <TextBox HorizontalAlignment="Left" Name="newPubNumberTextBox" Height="23" Margin="597,378,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Name="newFirstNameTextBox" Text="{Binding Source={StaticResource key_ResearcherStub}, Path=FirstName, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="597,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Name="newLastNameTextBox" Text="{Binding Source={StaticResource key_ResearcherStub}, Path=LastName, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="597,256,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <DatePicker Name="newBirthdateDatePicker" SelectedDate="{Binding Source={StaticResource key_ResearcherStub}, Path=Birthdate, UpdateSourceTrigger=PropertyChanged}" Margin="552,301,75,77"></DatePicker>
+        <ComboBox Name="newSciFieldComboBox" SelectedItem="{Binding Source={StaticResource key_ResearcherStub}, Path=SciField, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding ResearchAreas}" Margin="552,347,24,46"></ComboBox>
+        <TextBox HorizontalAlignment="Left" Name="newPubNumberTextBox" Text="{Binding Source={StaticResource key_ResearcherStub}, Path=PubNumber, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource key_PubNumberConverter}}" Height="23" Margin="597,378,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
 </Window>

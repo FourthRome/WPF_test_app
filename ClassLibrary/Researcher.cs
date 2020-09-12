@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Text;
+using System.ComponentModel;
 
 namespace ClassLibrary
 {

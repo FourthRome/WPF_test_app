@@ -31,47 +31,50 @@ namespace WPFApp
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             team = this.FindResource("team") as TeamObservable;
+            researcherStub = this.FindResource("key_ResearcherStub") as Researcher;
+
+
             team.AddDefaults();
             team.AddDefaultResearcher();
 
-            Binding bd1 = new Binding();
-            bd1.Source = researcherStub;
-            bd1.Path = new PropertyPath("FirstName");
-            bd1.Mode = BindingMode.OneWayToSource;
-            newFirstNameTextBox.SetBinding(TextBox.TextProperty, bd1);
+            //Binding bd1 = new Binding();
+            //bd1.Source = researcherStub;
+            //bd1.Path = new PropertyPath("FirstName");
+            //bd1.Mode = BindingMode.OneWayToSource;
+            //newFirstNameTextBox.SetBinding(TextBox.TextProperty, bd1);
 
-            Binding bd2 = new Binding();
-            bd2.Source = researcherStub;
-            bd2.Path = new PropertyPath("LastName");
-            bd2.Mode = BindingMode.OneWayToSource;
-            newLastNameTextBox.SetBinding(TextBox.TextProperty, bd2);
+            //Binding bd2 = new Binding();
+            //bd2.Source = researcherStub;
+            //bd2.Path = new PropertyPath("LastName");
+            //bd2.Mode = BindingMode.OneWayToSource;
+            //newLastNameTextBox.SetBinding(TextBox.TextProperty, bd2);
 
-            Binding bd3 = new Binding();
-            bd3.Source = researcherStub;
-            bd3.Path = new PropertyPath("Birthdate");
-            bd3.Mode = BindingMode.OneWayToSource;
-            newBirthdateDatePicker.SetBinding(DatePicker.SelectedDateProperty, bd3);
+            //Binding bd3 = new Binding();
+            //bd3.Source = researcherStub;
+            //bd3.Path = new PropertyPath("Birthdate");
+            //bd3.Mode = BindingMode.OneWayToSource;
+            //newBirthdateDatePicker.SetBinding(DatePicker.SelectedDateProperty, bd3);
 
-            Binding bd4 = new Binding();
-            bd4.Source = researcherStub;
-            bd4.Path = new PropertyPath("SciField");
-            bd4.Mode = BindingMode.OneWayToSource;
-            newSciFieldComboBox.SetBinding(ComboBox.SelectedValueProperty, bd4);
+            //Binding bd4 = new Binding();
+            //bd4.Source = researcherStub;
+            //bd4.Path = new PropertyPath("SciField");
+            //bd4.Mode = BindingMode.OneWayToSource;
+            //newSciFieldComboBox.SetBinding(ComboBox.SelectedValueProperty, bd4);
 
-            Binding bd5 = new Binding();
-            bd5.Source = researcherStub;
-            bd5.Path = new PropertyPath("PubNumber");
-            bd5.Mode = BindingMode.OneWayToSource;
-            bd5.Converter = new PubNumberConverter();
-            bd5.ValidatesOnExceptions = true;
-            newPubNumberTextBox.SetBinding(TextBox.TextProperty, bd5);
+            //Binding bd5 = new Binding();
+            //bd5.Source = researcherStub;
+            //bd5.Path = new PropertyPath("PubNumber");
+            //bd5.Mode = BindingMode.OneWayToSource;
+            //bd5.Converter = new PubNumberConverter();
+            //bd5.ValidatesOnExceptions = true;
+            //newPubNumberTextBox.SetBinding(TextBox.TextProperty, bd5);
 
             //researcherStub = this.FindResource("key_ResearcherStub") as Researcher;
         }
 
         public MainWindow()
         {
-            researcherStub = new Researcher();
+            //researcherStub = new Researcher();
             InitializeComponent();
         }
 
@@ -131,12 +134,6 @@ namespace WPFApp
             {
                 this.team = new TeamObservable();
                 this.DataContext = this.team;
-
-                this.researcherStub.FirstName = null;
-                this.researcherStub.LastName = null;
-                this.researcherStub.Birthdate = new DateTime();
-                this.researcherStub.SciField = null;
-                this.researcherStub.PubNumber = 0;
             }
         }
 

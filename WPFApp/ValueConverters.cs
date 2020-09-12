@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace WPFApp
 {
-    [ValueConversion(typeof(int), typeof(string))]
+    [ValueConversion(typeof(int), typeof(String))]
     public class PubNumberConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

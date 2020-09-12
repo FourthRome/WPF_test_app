@@ -78,11 +78,6 @@ namespace ClassLibrary
             this.CollectionChanged += this.OnCollectionChanged;
         }
 
-        public void OnDeserialization(object sender)
-        {
-            this.CollectionChanged += this.OnCollectionChanged;
-        }
-
         //---------------
         // Private methods
         //---------------
@@ -170,6 +165,10 @@ namespace ClassLibrary
         {
             this.ChangesNotSaved = true;
             this.UpdateResearcherFraction();
+        }
+        public void OnDeserialization(object sender)
+        {
+            this.CollectionChanged += this.OnCollectionChanged;
         }
 
         //---------------

@@ -30,8 +30,8 @@ namespace WPFApp
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            team = this.FindResource("team") as TeamObservable;
-            researcherStub = this.FindResource("key_ResearcherStub") as Researcher;
+            team = this.FindResource("key_team") as TeamObservable;
+            researcherStub = this.FindResource("key_researcherStub") as Researcher;
         }
 
         public MainWindow()

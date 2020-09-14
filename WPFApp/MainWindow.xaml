@@ -28,16 +28,21 @@
     </Window.Resources>
     <Grid Name="mainGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Menu HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792">
-            <MenuItem Header="File" Height="44" Width="77">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Menu HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  VerticalAlignment="Top">
+            <MenuItem Header="File" Height="30" Width="77">
                 <MenuItem Header="New" Click="OnClickNew" HorizontalAlignment="Left" Height="28" Width="140"/>
                 <MenuItem Header="Open" Click="OnClickOpen" HorizontalAlignment="Left" Height="28" Width="140"/>
                 <MenuItem Header="Save" Click="OnClickSave" HorizontalAlignment="Left" Height="34" Width="140"/>
             </MenuItem>
-            <MenuItem Header="Edit" Height="41" Width="93">
+            <MenuItem Header="Edit" Height="30" Width="93">
                 <MenuItem Header="Add Default Researcher" Click="OnClickAddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
                 <MenuItem Header="Add Default Programmer" Click="OnClickAddDefaultProgrammer" HorizontalAlignment="Left" Height="28" Width="213" Margin="0,0,-73,0"/>
                 <MenuItem Header="Add Custom Researcher" Click="OnClickAddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
@@ -46,33 +51,56 @@
             </MenuItem>
         </Menu>
 
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="552,68,0,0" TextWrapping="Wrap" Text="{Binding Path=GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Name="groupNameTextBox"/>
-        <TextBlock HorizontalAlignment="Left" Margin="626,91,0,0" TextWrapping="Wrap" Text="{Binding Path=ResearcherFraction}" VerticalAlignment="Top" Name="researcherFractionTextBlock" Height="16" Width="66"/>
-        <TextBlock HorizontalAlignment="Left" Margin="626,134,0,0" TextWrapping="Wrap" Text="{Binding Path=ChangesNotSaved}" VerticalAlignment="Top" Name="saveStatusTextBlock" Height="28" Width="120"/>
+        <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Name="groupNameTextBox" Grid.Row="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Path=GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch"/>
+            <TextBlock Name="researcherFractionTextBlock" Grid.Row="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Path=ResearcherFraction}" VerticalAlignment="Stretch"/>
+            <TextBlock Name="saveStatusTextBlock" Grid.Row="2" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Path=ChangesNotSaved}" VerticalAlignment="Stretch"/>
 
-        <ListBox HorizontalAlignment="Left" Height="128" Margin="10,47,0,0" VerticalAlignment="Top" Width="333" Name="teamObservableListBox"
+            <RadioButton Grid.Row="0" Grid.Column="1" Content="Use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Checked="OnCheckedUseDataTemplate"/>
+            <RadioButton Name="dontUseDataTemplateRadioButton" Grid.Row="1" Grid.Column="1" Content="Don't use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Checked="OnCheckedDontUseDataTemplate"/>
+        </Grid>
+        
+        <ListBox Name="teamObservableListBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" ItemTemplate="{StaticResource key_PersonListDataTemplate}"/>
-        <ListBox HorizontalAlignment="Left" Height="173" Margin="10,194,0,0" VerticalAlignment="Top" Width="233" Name="researchersListBox"
+
+        <Grid Name="newResearcherGrid" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Name="birthdateTextBlock" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.Birthdate}"/>
+            <TextBlock Name="sciFieldTextBlock" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.SciField}"/>
+            <TextBlock Name="pubNumberTextBlock" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.PubNumber}"/>
+
+            <TextBox Name="newFirstNameTextBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Source={StaticResource key_researcherStub}, Path=FirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+            <TextBox Name="newLastNameTextBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Source={StaticResource key_researcherStub}, Path=LastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+            <DatePicker Name="newBirthdateDatePicker" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedDate="{Binding Source={StaticResource key_researcherStub}, Path=Birthdate, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+            <ComboBox Name="newSciFieldComboBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItem="{Binding Source={StaticResource key_researcherStub}, Path=SciField, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, ValidatesOnDataErrors=True}"
+                  ItemsSource="{Binding Path=ResearchAreas}" SelectedIndex="0" IsReadOnly="True">
+            </ComboBox>
+            <TextBox Name="newPubNumberTextBox" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Source={StaticResource key_researcherStub}, Path=PubNumber, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource key_PubNumberConverter}, ValidatesOnDataErrors=True}"/>
+
+        </Grid>
+
+        <ListBox Name="researchersListBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                  ItemsSource="{Binding Source={StaticResource key_team_view}}" IsSynchronizedWithCurrentItem="True" ItemTemplate="{StaticResource key_ResearcherListDataTemplate}"
                  ContextMenu="{StaticResource key_ResearcherContextMenu}">
-            
         </ListBox>
-
-        <RadioButton Content="Use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Left" Margin="400,89,0,0" VerticalAlignment="Top" Checked="OnCheckedUseDataTemplate" Height="15" Width="115"/>
-        <RadioButton Content="Don't use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Left" Margin="400,132,0,0" VerticalAlignment="Top" IsChecked="True" Checked="OnCheckedDontUseDataTemplate" Height="15" Width="146"/>
-
-        <TextBlock HorizontalAlignment="Left" Height="23" Margin="278,256,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.Birthdate}" VerticalAlignment="Top" Width="120" Name="birthdateTextBlock"/>
-        <TextBlock HorizontalAlignment="Left" Height="23" Margin="278,301,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.SciField}" VerticalAlignment="Top" Width="120" Name="sciFieldTextBlock"/>
-        <TextBlock HorizontalAlignment="Left" Height="23" Margin="278,365,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.PubNumber}" VerticalAlignment="Top" Width="120" Name="pubNumberTextBlock"/>
-
-
-        <TextBox HorizontalAlignment="Left" Name="newFirstNameTextBox" Text="{Binding Source={StaticResource key_researcherStub}, Path=FirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Height="23" Margin="597,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Name="newLastNameTextBox" Text="{Binding Source={StaticResource key_researcherStub}, Path=LastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Height="23" Margin="597,256,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <DatePicker Name="newBirthdateDatePicker" SelectedDate="{Binding Source={StaticResource key_researcherStub}, Path=Birthdate, UpdateSourceTrigger=PropertyChanged}" Margin="552,301,75,77"></DatePicker>
-        <ComboBox Name="newSciFieldComboBox" SelectedItem="{Binding Source={StaticResource key_researcherStub}, Path=SciField, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, ValidatesOnDataErrors=True}"
-                  ItemsSource="{Binding Path=ResearchAreas}" SelectedIndex="0" IsReadOnly="True" Margin="552,347,24,41">
-        </ComboBox>
-        <TextBox HorizontalAlignment="Left" Name="newPubNumberTextBox" Text="{Binding Source={StaticResource key_researcherStub}, Path=PubNumber, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource key_PubNumberConverter}, ValidatesOnDataErrors=True}" Height="23" Margin="597,378,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-
     </Grid>
 </Window>

@@ -32,6 +32,8 @@ namespace WPFApp
         {
             team = this.FindResource("key_team") as TeamObservable;
             researcherStub = this.FindResource("key_researcherStub") as Researcher;
+
+            this.dontUseDataTemplateRadioButton.IsChecked = true;
         }
 
         public MainWindow()
@@ -60,7 +62,7 @@ namespace WPFApp
         private void OnClickAddCustomResearcher(object sender, RoutedEventArgs e)
         {
             bool inputErrors = false;
-            foreach(FrameworkElement child in mainGrid.Children)
+            foreach(FrameworkElement child in newResearcherGrid.Children)
             {
                 if (Validation.GetHasError(child))
                 {

@@ -102,7 +102,31 @@ namespace WPFApp
 
         private void OnClickSave(object sender, RoutedEventArgs e)
         {
-            SaveCollection();
+            if (ValidateTeamBeforeSave()) { SaveCollection(); }
+        }
+
+        private bool ValidateTeamBeforeSave()
+        {
+            bool inputErrors = false;
+            foreach (FrameworkElement child in teamObservableInfoGrid.Children)
+            {
+                if (Validation.GetHasError(child))
+                {
+                    inputErrors = true;
+                    break;
+                }
+            }
+
+            if (inputErrors)
+            {
+                MessageBox.Show(
+                    "Some fields with information about the team are filled incorrectly. Please check them.",
+                    "TeamObservable Editor",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return false;
+            }
+            else { return true; }
         }
 
         private void OnClosing(object sender, CancelEventArgs e)
@@ -155,7 +179,7 @@ namespace WPFApp
                     MessageBoxResult.Yes);
 
                 if (result == MessageBoxResult.Cancel) { return false; }
-                else if (result == MessageBoxResult.Yes) { return this.SaveCollection(); }
+                else if (result == MessageBoxResult.Yes) { return ValidateTeamBeforeSave() && SaveCollection(); }
             }
             return true;
         }

@@ -13,7 +13,7 @@ using System.Runtime.Serialization;
 namespace ClassLibrary
 {
     [Serializable]
-    public class TeamObservable : System.Collections.ObjectModel.ObservableCollection<Person>, INotifyPropertyChanged, IDeserializationCallback
+    public class TeamObservable : System.Collections.ObjectModel.ObservableCollection<Person>, INotifyPropertyChanged, IDeserializationCallback, IDataErrorInfo
     {
         //---------------
         // Private fields
@@ -56,6 +56,26 @@ namespace ClassLibrary
 
         [field:NonSerializedAttribute()]
         public new event PropertyChangedEventHandler PropertyChanged;
+
+        public string Error { get { throw new NotImplementedException(); } }
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                string msg = null;
+                switch (propertyName)
+                {
+                    case "GroupName":
+                        if (GroupName == null || GroupName == "") { msg = "GroupName must be non-empty."; }
+                        break;
+                    default:
+                        break;
+                }
+
+                return msg;
+            }
+        }
 
         //-------------
         // Constructors

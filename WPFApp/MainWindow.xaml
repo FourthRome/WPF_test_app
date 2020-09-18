@@ -52,7 +52,7 @@
         </Menu>
 
         <Border Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" BorderBrush="DarkGray">
-            <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="130">
+            <Grid Name="teamObservableInfoGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Height="130">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"></ColumnDefinition>
                     <ColumnDefinition Width="150"></ColumnDefinition>
@@ -65,7 +65,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0"  VerticalAlignment="Center" TextAlignment="Right" TextWrapping="Wrap" Margin="0,0,10,0">Group name:</TextBlock>
-                <TextBox Name="groupNameTextBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="10,0,10,0" Text="{Binding Path=GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Name="groupNameTextBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="10,0,10,0" Text="{Binding Path=GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                 <TextBlock Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center" TextAlignment="Right" TextWrapping="Wrap" Margin="0,0,10,0">Researchers' fraction:</TextBlock>
                 <TextBlock Name="researcherFractionTextBlock" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="10,0,10,0" Text="{Binding Path=ResearcherFraction}"/>
                 <TextBlock Grid.Row="2" Grid.Column="0"  VerticalAlignment="Center" TextAlignment="Right" TextWrapping="Wrap" Margin="0,0,10,0">Changes not saved:</TextBlock>

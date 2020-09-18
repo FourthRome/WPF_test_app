@@ -145,7 +145,10 @@ namespace WPFApp
 
         private void OnClickRemove(object sender, RoutedEventArgs e)
         {
-            team.RemoveAt(this.teamObservableListBox.SelectedIndex);
+            if (this.teamObservableListBox.SelectedIndex >= 0)
+            {
+                team.RemoveAt(this.teamObservableListBox.SelectedIndex);
+            }
         }
 
         private bool SaveCollection()

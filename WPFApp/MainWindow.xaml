@@ -32,24 +32,45 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Menu HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  VerticalAlignment="Top">
-            <MenuItem Header="File" Height="20" Width="40">
-                <MenuItem Header="New" Click="OnClickNew" HorizontalAlignment="Left" Height="20" Width="150"/>
-                <MenuItem Header="Open" Click="OnClickOpen" HorizontalAlignment="Left" Height="20" Width="150"/>
-                <MenuItem Header="Save" Click="OnClickSave" HorizontalAlignment="Left" Height="20" Width="150"/>
-            </MenuItem>
-            <MenuItem Header="Edit" Height="20" Width="40">
-                <MenuItem Header="Add Default Researcher" Click="OnClickAddDefaultResearcher" HorizontalAlignment="Left" Height="20" Width="250"/>
-                <MenuItem Header="Add Default Programmer" Click="OnClickAddDefaultProgrammer" HorizontalAlignment="Left" Height="20" Width="250"/>
-                <MenuItem Header="Add Custom Researcher" Click="OnClickAddCustomResearcher" HorizontalAlignment="Left" Height="20" Width="250"/>
-                <MenuItem Header="Add Defaults" Click="OnClickAddDefaults" HorizontalAlignment="Left" Height="20" Width="250"/>
-                <MenuItem Header="Remove" Click="OnClickRemove" HorizontalAlignment="Left" Height="20" Width="250"/>
-            </MenuItem>
-        </Menu>
+
+        <Grid Name="menuGrid" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Menu Grid.Row="0" Grid.Column="0">
+                <MenuItem Header="File" Height="20" Width="40">
+                    <MenuItem Header="New" Click="OnClickNew" HorizontalAlignment="Left" Height="20" Width="150"/>
+                    <MenuItem Header="Open" Click="OnClickOpen" HorizontalAlignment="Left" Height="20" Width="150"/>
+                    <MenuItem Header="Save" Click="OnClickSave" HorizontalAlignment="Left" Height="20" Width="150"/>
+                </MenuItem>
+                <MenuItem Header="Edit" Height="20" Width="40">
+                    <MenuItem Header="Add Default Researcher" Click="OnClickAddDefaultResearcher" HorizontalAlignment="Left" Height="20" Width="250"/>
+                    <MenuItem Header="Add Default Programmer" Click="OnClickAddDefaultProgrammer" HorizontalAlignment="Left" Height="20" Width="250"/>
+                    <MenuItem Header="Add Custom Researcher" Click="OnClickAddCustomResearcher" HorizontalAlignment="Left" Height="20" Width="250"/>
+                    <MenuItem Header="Add Defaults" Click="OnClickAddDefaults" HorizontalAlignment="Left" Height="20" Width="250"/>
+                    <MenuItem Header="Remove" Click="OnClickRemove" HorizontalAlignment="Left" Height="20" Width="250"/>
+                </MenuItem>
+            </Menu>
+
+            <ToolBar Grid.Row="1" Grid.Column="0">
+                <Button Command="" Content="Open" Height="20"></Button>
+                <Button Command="" Content="Save" Height="20"></Button>
+                <Button Command="" Content="Add custom" Height="20"></Button>
+                <Button Command="" Content="Remove" Height="20"></Button>
+            </ToolBar>
+
+        </Grid>
+
+        
 
         <Border Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" BorderBrush="DarkGray">
             <Grid Name="teamObservableInfoGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Height="130">
@@ -109,7 +130,7 @@
                 <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0" TextWrapping="Wrap">New researcher's last name:</TextBlock>
                 <TextBox Name="newLastNameTextBox" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" TextWrapping="Wrap" Text="{Binding Source={StaticResource key_researcherStub}, Path=LastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                 <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0" TextWrapping="Wrap">New researcher's birthdate:</TextBlock>
-                <DatePicker Name="newBirthdateDatePicker" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" SelectedDate="{Binding Source={StaticResource key_researcherStub}, Path=Birthdate, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                <DatePicker Name="newBirthdateDatePicker" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" SelectedDate="{Binding Source={StaticResource key_researcherStub}, Path=Birthdate, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></DatePicker>
                 <TextBlock Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0" TextWrapping="Wrap">New researcher's scientific field:</TextBlock>
                 <ComboBox Name="newSciFieldComboBox" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" SelectedItem="{Binding Source={StaticResource key_researcherStub}, Path=SciField, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, ValidatesOnDataErrors=True}"
                   ItemsSource="{Binding Path=ResearchAreas}" SelectedIndex="0" IsReadOnly="True"/>

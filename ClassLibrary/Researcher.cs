@@ -27,6 +27,9 @@ namespace ClassLibrary
                     case "LastName":
                         if (LastName == null || LastName == "") { msg = "LastName must be non-empty."; }
                         break;
+                    case "Birthdate":
+                        if (Birthdate.Year < 1930 || Birthdate.Year > 2000) { msg = "Birthdate is not correct."; }
+                        break;
                     case "SciField":
                         if (SciField == null || SciField == "") { msg = "SciField must be non-empty."; }
                         break;

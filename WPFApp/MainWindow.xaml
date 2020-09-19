@@ -23,9 +23,18 @@
         <cl:Researcher x:Key="key_researcherStub"/>
         <ContextMenu x:Key="key_ResearcherContextMenu">
             <MenuItem Header="Add Default Researcher" Click="OnClickAddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
-            <MenuItem Header="Add Custom Researcher" Click="OnClickAddCustomResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
+            <MenuItem Header="Add Custom Researcher" Command="{x:Static local:MainWindow.AddCustomResearcherCommand}" HorizontalAlignment="Left" Height="28" Width="140"/>
         </ContextMenu>
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open" Executed="OpenCommandHandler"></CommandBinding>
+        <CommandBinding Command="ApplicationCommands.Save" CanExecute="CanSaveCommandHandler" Executed="SaveCommandHandler"></CommandBinding>
+        <CommandBinding Command="ApplicationCommands.Delete" CanExecute="CanRemoveCommandHandler" Executed="RemoveCommandHandler"></CommandBinding>
+        <CommandBinding Command="{x:Static local:MainWindow.AddCustomResearcherCommand}" CanExecute="CanAddCustomResearcherCommandHandler" Executed="AddCustomResearcherCommandHandler"></CommandBinding>
+    </Window.CommandBindings>
+    
+    
+    
     <Grid Name="mainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500"/>
@@ -49,23 +58,23 @@
             <Menu Grid.Row="0" Grid.Column="0">
                 <MenuItem Header="File" Height="20" Width="40">
                     <MenuItem Header="New" Click="OnClickNew" HorizontalAlignment="Left" Height="20" Width="150"/>
-                    <MenuItem Header="Open" Click="OnClickOpen" HorizontalAlignment="Left" Height="20" Width="150"/>
-                    <MenuItem Header="Save" Click="OnClickSave" HorizontalAlignment="Left" Height="20" Width="150"/>
+                    <MenuItem Header="Open" Command="ApplicationCommands.Open" HorizontalAlignment="Left" Height="20" Width="150"/>
+                    <MenuItem Header="Save" Command="ApplicationCommands.Save" HorizontalAlignment="Left" Height="20" Width="150"/>
                 </MenuItem>
                 <MenuItem Header="Edit" Height="20" Width="40">
                     <MenuItem Header="Add Default Researcher" Click="OnClickAddDefaultResearcher" HorizontalAlignment="Left" Height="20" Width="250"/>
                     <MenuItem Header="Add Default Programmer" Click="OnClickAddDefaultProgrammer" HorizontalAlignment="Left" Height="20" Width="250"/>
-                    <MenuItem Header="Add Custom Researcher" Click="OnClickAddCustomResearcher" HorizontalAlignment="Left" Height="20" Width="250"/>
+                    <MenuItem Header="Add Custom Researcher" Command="{x:Static local:MainWindow.AddCustomResearcherCommand}" HorizontalAlignment="Left" Height="20" Width="250"/>
                     <MenuItem Header="Add Defaults" Click="OnClickAddDefaults" HorizontalAlignment="Left" Height="20" Width="250"/>
-                    <MenuItem Header="Remove" Click="OnClickRemove" HorizontalAlignment="Left" Height="20" Width="250"/>
+                    <MenuItem Header="Remove" Command="ApplicationCommands.Delete" HorizontalAlignment="Left" Height="20" Width="250"/>
                 </MenuItem>
             </Menu>
 
             <ToolBar Grid.Row="1" Grid.Column="0">
-                <Button Command="" Content="Open" Height="20"></Button>
-                <Button Command="" Content="Save" Height="20"></Button>
-                <Button Command="" Content="Add custom" Height="20"></Button>
-                <Button Command="" Content="Remove" Height="20"></Button>
+                <Button Command="ApplicationCommands.Open" Content="Open" Height="20"></Button>
+                <Button Command="ApplicationCommands.Save" Content="Save" Height="20"></Button>
+                <Button Command="{x:Static local:MainWindow.AddCustomResearcherCommand}" Content="Add Сustom" Height="20"></Button>
+                <Button Command="ApplicationCommands.Delete" Content="Remove" Height="20"></Button>
             </ToolBar>
 
         </Grid>

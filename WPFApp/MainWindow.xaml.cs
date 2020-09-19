@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ClassLibrary;
 
 namespace WPFApp
@@ -25,8 +14,27 @@ namespace WPFApp
 
     public partial class MainWindow : Window
     {
+        //----------------------
+        // Private member fields
+        //----------------------
         private TeamObservable team;
         private Researcher researcherStub;
+
+
+        //---------------------
+        // Public static fields
+        //---------------------
+        public static RoutedCommand AddCustomResearcherCommand = new RoutedCommand("AddCustomResearcher", typeof(MainWindow));
+
+
+        //---------------------------------------------
+        // Constructors + window's basic event handlers
+        //---------------------------------------------
+
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
@@ -36,10 +44,14 @@ namespace WPFApp
             this.dontUseDataTemplateRadioButton.IsChecked = true;
         }
 
-        public MainWindow()
+        private void OnClosing(object sender, CancelEventArgs e)
         {
-            InitializeComponent();
+            if (this.ProceedWithCollectionReplacement() == false) { e.Cancel = true; }
         }
+
+        //--------------------
+        // Elements' callbacks
+        //--------------------
 
         private void FilterResearchers(object source, FilterEventArgs args)
         {
@@ -47,16 +59,23 @@ namespace WPFApp
             else args.Accepted = false;
         }
 
+        //---------------
+        // Event handlers
+        //---------------
+
         private void OnCheckedDontUseDataTemplate(object sender, RoutedEventArgs e)
         {
-            teamObservableListBox.ItemTemplate = null;
+            if (teamObservableListBox != null) { this.teamObservableListBox.ItemTemplate = null; }
+            
         }
 
         private void OnCheckedUseDataTemplate(object sender, RoutedEventArgs e)
         {
-            DataTemplate dataTemplate = this.TryFindResource("key_PersonListDataTemplate") as DataTemplate;
-
-            if (dataTemplate != null) teamObservableListBox.ItemTemplate = dataTemplate;
+            if (teamObservableListBox != null)
+            {
+                DataTemplate dataTemplate = TryFindResource("key_PersonListDataTemplate") as DataTemplate;
+                if (dataTemplate != null) teamObservableListBox.ItemTemplate = dataTemplate;
+            }
         }
 
         private void OnClickAddCustomResearcher(object sender, RoutedEventArgs e)
@@ -100,13 +119,127 @@ namespace WPFApp
             team.AddDefaults();
         }
 
+        private void OnClickOpen(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.Filter = "TeamObservable serialized object (*teamobservable)|*.teamobservable|All(*.*)|*.*";
+            dlg.FilterIndex = 0;
+            dlg.CheckFileExists = true;
+
+            if (dlg.ShowDialog() == true)
+            {
+                if (ProceedWithCollectionReplacement())
+                {
+                    TeamObservable.Load(dlg.FileName, ref team);
+                    // Here is no potential exception, but the file could be not opened properly.
+                    // Need a messagebox here.
+                    DataContext = team;
+                }
+            }
+        }
+
         private void OnClickSave(object sender, RoutedEventArgs e)
         {
             if (ValidateTeamBeforeSave()) { SaveCollection(); }
         }
 
+        private void OnClickNew(object sender, RoutedEventArgs e)
+        {
+            if (ProceedWithCollectionReplacement())
+            {
+                team = new TeamObservable();
+                DataContext = this.team;
+            }
+        }
+
+        private void OnClickRemove(object sender, RoutedEventArgs e)
+        {
+            if (this.teamObservableListBox.SelectedIndex >= 0)
+            {
+                team.RemoveAt(this.teamObservableListBox.SelectedIndex);
+            }
+        }
+
+
+        //------------------
+        // Command handlers
+        //------------------
+        private void OpenCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.Filter = "TeamObservable serialized object (*teamobservable)|*.teamobservable|All(*.*)|*.*";
+            dlg.FilterIndex = 0;
+            dlg.CheckFileExists = true;
+
+            if (dlg.ShowDialog() == true)
+            {
+                if (ProceedWithCollectionReplacement())
+                {
+                    TeamObservable.Load(dlg.FileName, ref team);
+                    // Here is no potential exception, but the file could be not opened properly.
+                    // Need a messagebox here.
+                    DataContext = team;
+                }
+            }
+        }
+
+        private void CanSaveCommandHandler(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = ValidateTeamBeforeSave();
+        }
+
+        private void SaveCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveCollection();
+        }
+
+        private void CanRemoveCommandHandler(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (teamObservableListBox == null) { e.CanExecute = false; }
+            else { e.CanExecute = (teamObservableListBox.SelectedIndex >= 0); }
+            
+        }
+
+        private void RemoveCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            team.RemoveAt(this.teamObservableListBox.SelectedIndex);
+        }
+
+        private void CanAddCustomResearcherCommandHandler(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (newResearcherGrid == null) {
+                e.CanExecute = false;
+                return;
+            }
+            bool inputErrors = false;
+            foreach (FrameworkElement child in newResearcherGrid.Children)
+            {
+                if (Validation.GetHasError(child))
+                {
+                    inputErrors = true;
+                    break;
+                }
+            }
+
+            e.CanExecute = !inputErrors;
+        }
+
+        private void AddCustomResearcherCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            Researcher newResearcher = researcherStub.DeepCopy() as Researcher;
+            team.Add(newResearcher);
+        }
+
+
+        //----------------------
+        // Inner logic functions
+        //----------------------
         private bool ValidateTeamBeforeSave()
         {
+            if (this.teamObservableInfoGrid == null) { return false; }
+
             bool inputErrors = false;
             foreach (FrameworkElement child in teamObservableInfoGrid.Children)
             {
@@ -117,38 +250,7 @@ namespace WPFApp
                 }
             }
 
-            if (inputErrors)
-            {
-                MessageBox.Show(
-                    "Some fields with information about the team are filled incorrectly. Please check them.",
-                    "TeamObservable Editor",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return false;
-            }
-            else { return true; }
-        }
-
-        private void OnClosing(object sender, CancelEventArgs e)
-        {
-            if (ProceedWithCollectionReplacement() == false) { e.Cancel = true; }
-        }
-
-        private void OnClickNew(object sender, RoutedEventArgs e)
-        {
-            if (ProceedWithCollectionReplacement())
-            {
-                this.team = new TeamObservable();
-                this.DataContext = this.team;
-            }
-        }
-
-        private void OnClickRemove(object sender, RoutedEventArgs e)
-        {
-            if (this.teamObservableListBox.SelectedIndex >= 0)
-            {
-                team.RemoveAt(this.teamObservableListBox.SelectedIndex);
-            }
+            return !inputErrors;
         }
 
         private bool SaveCollection()
@@ -182,30 +284,19 @@ namespace WPFApp
                     MessageBoxResult.Yes);
 
                 if (result == MessageBoxResult.Cancel) { return false; }
-                else if (result == MessageBoxResult.Yes) { return ValidateTeamBeforeSave() && SaveCollection(); }
+                else if (result == MessageBoxResult.Yes) {
+                    bool validation = ValidateTeamBeforeSave();
+                    if (!validation)
+                    {
+                        MessageBox.Show(
+                            "Some fields with information about the team are filled incorrectly. Please check them.",
+                            "TeamObservable Editor",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
+                    return validation && SaveCollection(); }
             }
             return true;
-        }
-
-        private void OnClickOpen(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            dlg.Filter = "TeamObservable serialized object (*teamobservable)|*.teamobservable|All(*.*)|*.*";
-            dlg.FilterIndex = 0;
-            dlg.CheckFileExists = true;
-
-            if (dlg.ShowDialog() == true)
-            {
-                if (ProceedWithCollectionReplacement())
-                {
-                    TeamObservable.Load(dlg.FileName, ref team);
-                    // Here is no potential exception, but the file could be not opened properly.
-                    // Need a messagebox here.
-                    this.DataContext = team;
-                }
-            }
-            
         }
     }
 }

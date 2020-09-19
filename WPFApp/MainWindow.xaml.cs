@@ -26,7 +26,6 @@ namespace WPFApp
         //---------------------------------------------
         // Constructors + window's basic event handlers
         //---------------------------------------------
-
         public MainWindow()
         {
             InitializeComponent();

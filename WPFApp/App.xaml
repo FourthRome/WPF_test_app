@@ -4,7 +4,4 @@
              xmlns:local="clr-namespace:WPFApp"
              xmlns:cl="clr-namespace:ClassLibrary;assembly=ClassLibrary"
              StartupUri="MainWindow.xaml">
-    <Application.Resources>
-        <cl:TeamObservable x:Key="key_team"/>
-    </Application.Resources>
 </Application>

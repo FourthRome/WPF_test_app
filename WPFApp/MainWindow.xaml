@@ -7,32 +7,47 @@
         xmlns:cl="clr-namespace:ClassLibrary;assembly=ClassLibrary"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000"
-        Loaded="WindowLoaded" DataContext="{StaticResource key_team}"
+        Loaded="WindowLoaded"
         Closing="OnClosing">
+
+    <!-- ================MainWindow properties================ -->
     <Window.Resources>
-        <CollectionViewSource Source="{Binding}" x:Key="key_team_view" Filter="FilterResearchers"/>
+        <!-- Converters -->
         <cl:PersonConverter x:Key="key_PersonConverter"/>
         <cl:ResearcherConverter x:Key="key_ResearcherConverter"/>
         <local:PubNumberConverter x:Key="key_PubNumberConverter"/>
+
+        <!-- ListView auxiliary objects -->
+        <CollectionViewSource Source="{Binding}" x:Key="key_team_view" Filter="FilterResearchers"/>
         <DataTemplate x:Key="key_PersonListDataTemplate">
             <TextBlock Text="{Binding Converter={StaticResource key_PersonConverter}}"/>
         </DataTemplate>
         <DataTemplate x:Key="key_ResearcherListDataTemplate">
             <TextBlock Text="{Binding Converter={StaticResource key_ResearcherConverter}}"/>
         </DataTemplate>
+
+        <!-- Backing data objects -->
+        <cl:TeamObservable x:Key="key_team"/>
         <cl:Researcher x:Key="key_researcherStub"/>
+
+        <!-- Menus -->
         <ContextMenu x:Key="key_ResearcherContextMenu">
             <MenuItem Header="Add Default Researcher" Click="OnClickAddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
             <MenuItem Header="Add Custom Researcher" Command="{x:Static local:MainWindow.AddCustomResearcherCommand}" HorizontalAlignment="Left" Height="28" Width="140"/>
         </ContextMenu>
     </Window.Resources>
+
+    <Window.DataContext>
+        <Binding Source="{StaticResource key_team}"></Binding>
+    </Window.DataContext>
+
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Open" Executed="OpenCommandHandler"></CommandBinding>
         <CommandBinding Command="ApplicationCommands.Save" CanExecute="CanSaveCommandHandler" Executed="SaveCommandHandler"></CommandBinding>
         <CommandBinding Command="ApplicationCommands.Delete" CanExecute="CanRemoveCommandHandler" Executed="RemoveCommandHandler"></CommandBinding>
         <CommandBinding Command="{x:Static local:MainWindow.AddCustomResearcherCommand}" CanExecute="CanAddCustomResearcherCommandHandler" Executed="AddCustomResearcherCommandHandler"></CommandBinding>
     </Window.CommandBindings>
-    
+    <!--================End of MainWindow properties================-->
     
     
     <Grid Name="mainGrid">

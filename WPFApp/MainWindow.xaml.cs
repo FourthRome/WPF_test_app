@@ -10,8 +10,6 @@ namespace WPFApp
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    
-
     public partial class MainWindow : Window
     {
         //----------------------
@@ -20,12 +18,10 @@ namespace WPFApp
         private TeamObservable team;
         private Researcher researcherStub;
 
-
         //---------------------
         // Public static fields
         //---------------------
         public static RoutedCommand AddCustomResearcherCommand = new RoutedCommand("AddCustomResearcher", typeof(MainWindow));
-
 
         //---------------------------------------------
         // Constructors + window's basic event handlers
@@ -66,7 +62,6 @@ namespace WPFApp
         private void OnCheckedDontUseDataTemplate(object sender, RoutedEventArgs e)
         {
             if (teamObservableListBox != null) { this.teamObservableListBox.ItemTemplate = null; }
-            
         }
 
         private void OnCheckedUseDataTemplate(object sender, RoutedEventArgs e)
@@ -75,32 +70,6 @@ namespace WPFApp
             {
                 DataTemplate dataTemplate = TryFindResource("key_PersonListDataTemplate") as DataTemplate;
                 if (dataTemplate != null) teamObservableListBox.ItemTemplate = dataTemplate;
-            }
-        }
-
-        private void OnClickAddCustomResearcher(object sender, RoutedEventArgs e)
-        {
-            bool inputErrors = false;
-            foreach(FrameworkElement child in newResearcherGrid.Children)
-            {
-                if (Validation.GetHasError(child))
-                {
-                    inputErrors = true;
-                    break;
-                }
-            }
-
-            if (inputErrors)
-            {
-                MessageBox.Show(
-                    "Some fields with information about new researcher are filled incorrectly. Please check them.",
-                    "TeamObservable Editor",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            } else
-            {
-                Researcher newResearcher = researcherStub.DeepCopy() as Researcher;
-                team.Add(newResearcher);
             }
         }
 
@@ -119,31 +88,6 @@ namespace WPFApp
             team.AddDefaults();
         }
 
-        private void OnClickOpen(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            dlg.Filter = "TeamObservable serialized object (*teamobservable)|*.teamobservable|All(*.*)|*.*";
-            dlg.FilterIndex = 0;
-            dlg.CheckFileExists = true;
-
-            if (dlg.ShowDialog() == true)
-            {
-                if (ProceedWithCollectionReplacement())
-                {
-                    TeamObservable.Load(dlg.FileName, ref team);
-                    // Here is no potential exception, but the file could be not opened properly.
-                    // Need a messagebox here.
-                    DataContext = team;
-                }
-            }
-        }
-
-        private void OnClickSave(object sender, RoutedEventArgs e)
-        {
-            if (ValidateTeamBeforeSave()) { SaveCollection(); }
-        }
-
         private void OnClickNew(object sender, RoutedEventArgs e)
         {
             if (ProceedWithCollectionReplacement())
@@ -152,15 +96,6 @@ namespace WPFApp
                 DataContext = this.team;
             }
         }
-
-        private void OnClickRemove(object sender, RoutedEventArgs e)
-        {
-            if (this.teamObservableListBox.SelectedIndex >= 0)
-            {
-                team.RemoveAt(this.teamObservableListBox.SelectedIndex);
-            }
-        }
-
 
         //------------------
         // Command handlers
@@ -199,7 +134,6 @@ namespace WPFApp
         {
             if (teamObservableListBox == null) { e.CanExecute = false; }
             else { e.CanExecute = (teamObservableListBox.SelectedIndex >= 0); }
-            
         }
 
         private void RemoveCommandHandler(object sender, ExecutedRoutedEventArgs e)
@@ -222,7 +156,6 @@ namespace WPFApp
                     break;
                 }
             }
-
             e.CanExecute = !inputErrors;
         }
 
@@ -231,7 +164,6 @@ namespace WPFApp
             Researcher newResearcher = researcherStub.DeepCopy() as Researcher;
             team.Add(newResearcher);
         }
-
 
         //----------------------
         // Inner logic functions
@@ -249,7 +181,6 @@ namespace WPFApp
                     break;
                 }
             }
-
             return !inputErrors;
         }
 

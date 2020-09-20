@@ -142,12 +142,12 @@ namespace WPFApp
 
         private void CanAddCustomResearcherCommandHandler(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (newResearcherGrid == null) {
+            if (researcherGrid == null) {
                 e.CanExecute = false;
                 return;
             }
             bool inputErrors = false;
-            foreach (FrameworkElement child in newResearcherGrid.Children)
+            foreach (FrameworkElement child in researcherGrid.Children)
             {
                 if (Validation.GetHasError(child))
                 {

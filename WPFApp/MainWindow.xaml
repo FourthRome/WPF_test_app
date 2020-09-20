@@ -1,23 +1,24 @@
 ﻿<Window x:Class="WPFApp.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFApp"
-        xmlns:cl="clr-namespace:ClassLibrary;assembly=ClassLibrary"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000"
-        Loaded="WindowLoaded"
-        Closing="OnClosing">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:WPFApp"
+    xmlns:cl="clr-namespace:ClassLibrary;assembly=ClassLibrary"
+    mc:Ignorable="d"
+    Title="MainWindow" Height="600" Width="1000"
+    Loaded="WindowLoaded"
+    Closing="OnClosing">
 
-    <!-- ================MainWindow properties================ -->
+    <!--MainWindow properties-->
     <Window.Resources>
-        <!-- Converters -->
+        <!--Converters-->
         <cl:PersonConverter x:Key="key_PersonConverter"/>
         <cl:ResearcherConverter x:Key="key_ResearcherConverter"/>
         <local:PubNumberConverter x:Key="key_PubNumberConverter"/>
-
-        <!-- ListView auxiliary objects -->
+        <!--Converters-->
+        
+        <!--ListView auxiliary objects-->
         <CollectionViewSource Source="{Binding}" x:Key="key_team_view" Filter="FilterResearchers"/>
         <DataTemplate x:Key="key_PersonListDataTemplate">
             <TextBlock Text="{Binding Converter={StaticResource key_PersonConverter}}"/>
@@ -25,18 +26,21 @@
         <DataTemplate x:Key="key_ResearcherListDataTemplate">
             <TextBlock Text="{Binding Converter={StaticResource key_ResearcherConverter}}"/>
         </DataTemplate>
-
-        <!-- Backing data objects -->
+        <!--ListView auxiliary objects-->
+        
+        <!--Backing data objects-->
         <cl:TeamObservable x:Key="key_team"/>
         <cl:Researcher x:Key="key_researcherStub"/>
-
-        <!-- Menus -->
+        <!--Backing data objects-->
+        
+        <!--Menus-->
         <ContextMenu x:Key="key_ResearcherContextMenu">
             <MenuItem Header="Add Default Researcher" Click="OnClickAddDefaultResearcher" HorizontalAlignment="Left" Height="28" Width="140"/>
             <MenuItem Header="Add Custom Researcher" Command="{x:Static local:MainWindow.AddCustomResearcherCommand}" HorizontalAlignment="Left" Height="28" Width="140"/>
         </ContextMenu>
+        <!--Menus-->
     </Window.Resources>
-
+        
     <Window.DataContext>
         <Binding Source="{StaticResource key_team}"></Binding>
     </Window.DataContext>
@@ -47,10 +51,11 @@
         <CommandBinding Command="ApplicationCommands.Delete" CanExecute="CanRemoveCommandHandler" Executed="RemoveCommandHandler"></CommandBinding>
         <CommandBinding Command="{x:Static local:MainWindow.AddCustomResearcherCommand}" CanExecute="CanAddCustomResearcherCommandHandler" Executed="AddCustomResearcherCommandHandler"></CommandBinding>
     </Window.CommandBindings>
-    <!--================End of MainWindow properties================-->
+    <!--MainWindow properties-->
     
-    
+    <!--Main Grid-->
     <Grid Name="mainGrid">
+        <!--Grid prologue-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500"/>
             <ColumnDefinition Width="1*"/>
@@ -60,8 +65,11 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
+        <!--Grid prologue-->
 
+        <!--Menu Grid--> 
         <Grid Name="menuGrid" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  VerticalAlignment="Top">
+            <!--Grid prologue-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -69,7 +77,9 @@
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
+            <!--Grid prologue-->
 
+            <!--Row 0-->
             <Menu Grid.Row="0" Grid.Column="0">
                 <MenuItem Header="File" Height="20" Width="40">
                     <MenuItem Header="New" Click="OnClickNew" HorizontalAlignment="Left" Height="20" Width="150"/>
@@ -84,20 +94,23 @@
                     <MenuItem Header="Remove" Command="ApplicationCommands.Delete" HorizontalAlignment="Left" Height="20" Width="250"/>
                 </MenuItem>
             </Menu>
+            <!--Row 0-->
 
+            <!--Row 1-->
             <ToolBar Grid.Row="1" Grid.Column="0">
                 <Button Command="ApplicationCommands.Open" Content="Open" Height="20"></Button>
                 <Button Command="ApplicationCommands.Save" Content="Save" Height="20"></Button>
                 <Button Command="{x:Static local:MainWindow.AddCustomResearcherCommand}" Content="Add Сustom" Height="20"></Button>
                 <Button Command="ApplicationCommands.Delete" Content="Remove" Height="20"></Button>
             </ToolBar>
-
+            <!--Row 1-->
         </Grid>
-
+        <!-- Menu Grid -->
         
-
+        <!--Grid with info about TeamObservable-->
         <Border Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" BorderBrush="DarkGray">
             <Grid Name="teamObservableInfoGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Height="130">
+                <!--Grid prologue-->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"></ColumnDefinition>
                     <ColumnDefinition Width="150"></ColumnDefinition>
@@ -108,26 +121,36 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-
+                <!--Grid prologue-->
+                
+                <!--Info about team-->
                 <TextBlock Grid.Row="0" Grid.Column="0"  VerticalAlignment="Center" TextAlignment="Right" TextWrapping="Wrap" Margin="0,0,10,0">Group name:</TextBlock>
                 <TextBox Name="groupNameTextBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="10,0,10,0" Text="{Binding Path=GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                 <TextBlock Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center" TextAlignment="Right" TextWrapping="Wrap" Margin="0,0,10,0">Researchers' fraction:</TextBlock>
                 <TextBlock Name="researcherFractionTextBlock" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="10,0,10,0" Text="{Binding Path=ResearcherFraction}"/>
                 <TextBlock Grid.Row="2" Grid.Column="0"  VerticalAlignment="Center" TextAlignment="Right" TextWrapping="Wrap" Margin="0,0,10,0">Changes not saved:</TextBlock>
                 <TextBlock Name="saveStatusTextBlock" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="10,0,10,0" Text="{Binding Path=ChangesNotSaved}"/>
-
+                <!--Info about team-->
+                
+                <!--TeamObservable ListBox settings-->
                 <RadioButton Grid.Row="0" Grid.Column="2" Content="Use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" Checked="OnCheckedUseDataTemplate"/>
                 <RadioButton Name="dontUseDataTemplateRadioButton" Grid.Row="1" Grid.Column="2" Content="Don't use DataTemplate" GroupName="DataTemplate" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" Checked="OnCheckedDontUseDataTemplate"/>
+                <!--TeamObservable ListBox settings-->
             </Grid>
         </Border>
+        <!--Grid with info about TeamObservable-->
         
+        <!--TeamObservable ListBox-->
         <Border Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray">
             <ListBox Name="teamObservableListBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" ItemTemplate="{StaticResource key_PersonListDataTemplate}"/>
         </Border>
-
+        <!--TeamObservable ListBox-->
+        
+        <!--Researcher Grid-->
         <Border Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" BorderBrush="DarkGray">
-            <Grid Name="newResearcherGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="250">
+            <Grid Name="researcherGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="250">
+                <!--Grid prologue-->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="125"></ColumnDefinition>
                     <ColumnDefinition Width="125"></ColumnDefinition>
@@ -141,14 +164,18 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-
+                <!--Grid prologue-->
+                
+                <!--Info about selected Researcher-->
                 <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0" TextWrapping="Wrap">Researcher's birthdate:</TextBlock>
                 <TextBlock Name="birthdateTextBlock" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Center" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.Birthdate}"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0" TextWrapping="Wrap">Researcher's scientific field:</TextBlock>
                 <TextBlock Name="sciFieldTextBlock" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.SciField}"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0" TextWrapping="Wrap">Researcher's number of publications:</TextBlock>
                 <TextBlock Name="pubNumberTextBlock" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding ElementName=researchersListBox, Path=SelectedItem.PubNumber}"/>
-
+                <!--Info about selected Researcher-->
+                
+                <!--Info about new researcher-->
                 <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0" TextWrapping="Wrap">New researcher's first name:</TextBlock>
                 <TextBox Name="newFirstNameTextBox" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0"  TextWrapping="Wrap" Text="{Binding Source={StaticResource key_researcherStub}, Path=FirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0" TextWrapping="Wrap">New researcher's last name:</TextBlock>
@@ -160,15 +187,19 @@
                   ItemsSource="{Binding Path=ResearchAreas}" SelectedIndex="0" IsReadOnly="True"/>
                 <TextBlock Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0" TextWrapping="Wrap">New researcher's number of publications:</TextBlock>
                 <TextBox Name="newPubNumberTextBox" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" TextWrapping="Wrap" Text="{Binding Source={StaticResource key_researcherStub}, Path=PubNumber, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource key_PubNumberConverter}, ValidatesOnDataErrors=True}"/>
+                <!--Info about new researcher-->
             </Grid>
         </Border>
+        <!--Researcher Grid-->
 
+        <!--Researcher ListBox-->
         <Border Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="DarkGray">
             <ListBox Name="researchersListBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  ItemsSource="{Binding Source={StaticResource key_team_view}}" IsSynchronizedWithCurrentItem="True" ItemTemplate="{StaticResource key_ResearcherListDataTemplate}"
                  ContextMenu="{StaticResource key_ResearcherContextMenu}">
             </ListBox>
         </Border>
-        
+        <!--Researcher ListBox-->
     </Grid>
+    <!--Main Grid-->
 </Window>

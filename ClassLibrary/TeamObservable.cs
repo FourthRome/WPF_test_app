@@ -54,11 +54,14 @@ namespace ClassLibrary
             }
         }
 
+        // Part of INotifyPropertyChanged
         [field:NonSerializedAttribute()]
         public new event PropertyChangedEventHandler PropertyChanged;
 
+        // Part of IDataErrorInfo
         public string Error { get { throw new NotImplementedException(); } }
 
+        // Part of IDataErrorInfo
         public string this[string propertyName]
         {
             get
@@ -90,6 +93,7 @@ namespace ClassLibrary
             {
                 "Physics",
                 "Mathematics",
+                "Computer Science",
                 "Biology",
                 "Chemistry",
                 "Other"
@@ -102,6 +106,7 @@ namespace ClassLibrary
         // Private methods
         //---------------
 
+        // Part of INotifyPropertyChanged
         private void NotifyPropertyChanged([CallerMemberName] String propertyName="")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -137,19 +142,19 @@ namespace ClassLibrary
 
         public void AddDefaults()
         {
-            AddPerson(new Person("Richard", "Nixon"));
-            AddPerson(new Researcher("Richard", "Feynman", sciField: "Quantum Physics", pubNumber: 42));
-            AddPerson(new Programmer("Edsger", "Dijkstra", exp: 40.0, field: "System Science"));
+            AddPerson(new Person("Richard", "Nixon", birthdate: new DateTime(1913, 1, 9)));
+            AddPerson(new Researcher("Richard", "Feynman", birthdate: new DateTime(1918, 6, 11), sciField: "Physics", pubNumber: 42));
+            AddPerson(new Programmer("Edsger", "Dijkstra", birthdate: new DateTime(1930, 6, 11), exp: 40.0, field: "Computer Science"));
         }
 
         public void AddDefaultProgrammer()
         {
-            AddPerson(new Programmer("John", "Carmack", exp: 30.0, field: "Game Development"));
+            AddPerson(new Programmer("John", "Carmack", birthdate: new DateTime(1970, 8, 20), exp: 30.0, field: "Computer Science"));
         }
 
         public void AddDefaultResearcher()
         {
-            AddPerson(new Researcher("Freeman", "Dyson", sciField: "Astrophysics", pubNumber: 23));
+            AddPerson(new Researcher("Freeman", "Dyson", birthdate: new DateTime(1923, 12, 15), sciField: "Physics", pubNumber: 23));
         }
 
         public override string ToString()
@@ -181,11 +186,14 @@ namespace ClassLibrary
             return result.ToString();
         }
 
+        // Part of ObservableCollection
         public void OnCollectionChanged(object sender, EventArgs e)
         {
             this.ChangesNotSaved = true;
             this.UpdateResearcherFraction();
         }
+
+        // Part of IDeserealizationCallback
         public void OnDeserialization(object sender)
         {
             this.CollectionChanged += this.OnCollectionChanged;
